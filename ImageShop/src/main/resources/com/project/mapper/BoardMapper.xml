@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mapper.BoardMapper">
+	<!-- 검색 조건을 나타내는 쿼리 조각-->
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				 AND title LIKE CONCAT('%', CONCAT(#{keyword}, '%'))    
+			</if>
+			<if test="searchType == 'c'.toString()">
+				 AND content LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'w'.toString()">
+				 AND writer LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				 AND (	title LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+						OR content LIKE CONCAT('%', CONCAT(#{keyword}, '%')))
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				 AND (	content LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+						OR writer LIKE CONCAT('%',CONCAT( #{keyword}, '%')))
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				 AND (	title LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+						OR content LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+						OR writer LIKE CONCAT('%', CONCAT(#{keyword}, '%')))
+			</if>
+		</if>
+	</sql>
+	<sql id="total_list">
+		<if test="searchType == null">
+			and rnum between #{sizePerPage}*#{page}-9 and #{sizePerPage}*#{page}
+		</if>
+	</sql>
+	<!-- 게시글 등록 처리 -->
+	<insert id="create">
+		INSERT INTO board
+			 (
+			   board_no,
+			   title,
+			   content,
+			   writer
+			 )
+		VALUES
+			 (
+			   board_seq.NEXTVAL,
+			   #{title},
+			   #{content},
+			   #{writer}
+			 )
+	</insert>
+	<!-- 게시글 목록 페이지 삭제 -->
+	<!--
+	<select id="list" resultType="Board">
+	 <![CDATA[
+	 	SELECT board_no,
+	 		   title,
+	 		   content,
+	 		   writer,
+	 		   reg_date
+	 	  FROM board 
+	 	 WHERE board_no > 0 
+	  ORDER BY board_no DESC,
+	  		   reg_date DESC
+	 ]]>
+	</select>
+	-->
+	
+	<!-- 페이징 요청 정보를 매개 변수로 받아 페이징 처리를 한 게시글 목록을 조회한다. -->
+	<!-- 검색 조건을 추가한다. -->
+	<select id="list" resultType="Board">
+		<![CDATA[
+	 	SELECT board_no,
+				title,
+				content,
+				writer,
+				reg_date
+		FROM (select board_no,
+					title,
+					content,
+					writer,
+					reg_date,
+					rownum as rnum 
+				from board)
+		where board_no > 0
+		]]>
+		
+	 	 <include refid="total_list"></include>
+	 	 <include refid="search"></include>
+	 	 
+		<![CDATA[
+		ORDER BY board_no DESC,
+				reg_date DESC
+		]]>
+	</select>
+	
+	
+	<!-- 게시글 상세 조회 -->
+	<select id="read" resultType="Board">
+		SELECT board_no, 
+			   title,
+			   content,
+			   writer,
+			   reg_date
+		  FROM board
+		 WHERE board_no = #{boardNo}
+	</select>
+	<!-- 게시글 수정 처리 -->
+	<update id="update">
+		UPDATE board
+		   SET title =#{title},
+			   content =#{content}
+		 WHERE board_no = #{boardNo}
+	</update>
+	<!-- 게시글 삭제 처리 -->
+	<delete id="delete">
+		DELETE FROM board
+		 WHERE board_no = #{boardNo}
+	</delete>
+	<!-- 게시글 전체 건수를 조회한다. -->
+	<!-- 검색 조건을 추가한다. -->
+	<select id="count" resultType="int">
+		<![CDATA[
+	 	SELECT count(board_no) 
+		  FROM board 
+		 WHERE board_no > 0 
+		]]>
+		<include refid="search"></include>
+	</select>
+</mapper>

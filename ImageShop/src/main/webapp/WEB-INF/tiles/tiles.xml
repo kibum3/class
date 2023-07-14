@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="main-template" template="/WEB-INF/tiles/layouts/main_template.jsp">
+		<put-attribute name="title" value="Main" />
+		<put-attribute name="header" value="/WEB-INF/tiles/components/main/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/tiles/components/main/menu.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/components/main/footer.jsp" />
+	</definition>
+	<definition name="home" extends="main-template">
+		<put-attribute name="title" value="Home" />
+		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
+	</definition>
+	
+	<!-- 코드그룹 관리 페이지에 대한 레이아웃 템플릿 구성요소를 정의한다. -->
+	<definition name="codegroup/*" extends="main-template">
+		<put-attribute name="title" value="CodeGroup" />
+		<put-attribute name="content" value="/WEB-INF/views/codegroup/{1}.jsp" />
+	</definition>
+	
+	<!-- 코드 관리 페이지에 대한 레이아웃 템플릿 구성요소를 정의한다. -->
+	<definition name="codedetail/*" extends="main-template">
+		<put-attribute name="title" value="CodeDetail" />
+		<put-attribute name="content" value="/WEB-INF/views/codedetail/{1}.jsp" />
+	</definition>
+	
+	<!-- 회원 관리 페이지에 대한 레이아웃 템플릿 구성 요소를 정의한다. -->
+	<definition name="user/*" extends="main-template">
+		<put-attribute name="title" value="User" />
+		<put-attribute name="content" value="/WEB-INF/views/user/{1}.jsp" />
+	</definition>
+	
+	<!-- 로그인 페이지에 대한 레이아웃 템플릿을 정의한다. -->
+	<definition name="common-template" template="/WEB-INF/tiles/layouts/common_template.jsp">
+		<put-attribute name="title" value="Common" />
+		<put-attribute name="header" value="/WEB-INF/tiles/components/common/header.jsp" />
+	</definition>
+	
+	<!-- 로그인 페이지에 대한 레이아웃 템플릿 구성 요소를 정의한다. -->
+	<definition name="auth/*" extends="common-template">
+		<put-attribute name="title" value="Login" />
+		<put-attribute name="content" value="/WEB-INF/views/auth/{1}.jsp" />
+	</definition>
+	
+	<!-- 회원 게시판 페이지에 대한 레이아웃 템플릿 구성 요소를 정의한다. -->
+	<definition name="board/*" extends="main-template">
+		<put-attribute name="title" value="Board" />
+		<put-attribute name="content" value="/WEB-INF/views/board/{1}.jsp" />
+	</definition>
+	
+	<!-- 공지사항 페이지에 대한 레이아웃 템플릿 구성 요소를 정의한다. -->
+	<definition name="notice/*" extends="main-template">
+		<put-attribute name="title" value="Notice" />
+		<put-attribute name="content" value="/WEB-INF/views/notice/{1}.jsp" />
+	</definition>
+	
+	<!-- 상품 관리 페이지에 대한 레이아웃 템플릿 구성 요소를 정의한다. -->
+	<definition name="item/*" extends="main-template">
+		<put-attribute name="title" value="Item" />
+		<put-attribute name="content" value="/WEB-INF/views/item/{1}.jsp" />
+	</definition>
+	
+	<!-- 코인 충전 페이지에 대한 레이아웃 템플릿 구성요소를 정의한다. -->
+	<definition name="coin/*" extends="main-template">
+		<put-attribute name="title" value="Coin" />
+		<put-attribute name="content" value="/WEB-INF/views/coin/{1}.jsp" />
+	</definition>
+	
+	<!-- 상품 구매 페이지에 대한 레이아웃 템플릿 구성 요소를 정의한다. -->
+	<definition name="useritem/*" extends="main-template">
+		<put-attribute name="title" value="UserItem" />
+		<put-attribute name="content" value="/WEB-INF/views/useritem/{1}.jsp" />
+	</definition>
+	
+	<!-- 자료실 페이지에 대한 레이아웃 템플릿 구성요소를 정의한다. -->
+	<definition name="pds/*" extends="main-template">
+		<put-attribute name="title" value="Pds" />
+		<put-attribute name="content" value="/WEB-INF/views/pds/{1}.jsp" />
+	</definition>
+	
+	<!-- 에러 페이지에 대한 레이아웃 템플릿 구성요솔르 정의한다 -->
+	<definition name="error/*" extends="common-template">
+		<put-attribute name="title" value="Error" />
+		<put-attribute name="content" value="/WEB-INF/views/error/{1}.jsp" />
+	</definition>
+</tiles-definitions>
